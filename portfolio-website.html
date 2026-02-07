@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Infrastructure Specialist | Server-Side Tracking Expert</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0A0E27;
+            --secondary: #1a1f3a;
+            --accent: #00D9FF;
+            --accent-dim: #0099b3;
+            --text: #E8EDF2;
+            --text-dim: #9BA8B8;
+            --surface: #141932;
+            --gradient-1: linear-gradient(135deg, #0A0E27 0%, #1a1f3a 100%);
+            --gradient-accent: linear-gradient(90deg, #00D9FF 0%, #00b8d4 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: var(--primary);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 3rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 217, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(0, 217, 255, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            color: var(--text);
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+        }
+
+        .hero h1 strong {
+            font-weight: 600;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-description {
+            font-size: 1.3rem;
+            color: var(--text-dim);
+            max-width: 700px;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            text-decoration: none;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease 0.6s forwards;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .cta-button:hover {
+            color: var(--primary);
+        }
+
+        .cta-button:hover::before {
+            left: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section Styles */
+        section {
+            padding: 6rem 3rem;
+            position: relative;
+        }
+
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 300;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-description {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            max-width: 700px;
+        }
+
+        /* About Section */
+        #about {
+            background: var(--secondary);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: start;
+        }
+
+        .profile-image-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin-bottom: 2rem;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+            filter: grayscale(20%);
+            transition: all 0.3s ease;
+        }
+
+        .profile-image:hover {
+            filter: grayscale(0%);
+            transform: scale(1.02);
+        }
+
+        .profile-image-container::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: 10px;
+            bottom: 10px;
+            border: 1px solid var(--accent);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .about-text p {
+            font-size: 1.15rem;
+            color: var(--text-dim);
+            margin-bottom: 1.5rem;
+            line-height: 1.9;
+        }
+
+        .expertise-list {
+            list-style: none;
+            margin-top: 2rem;
+        }
+
+        .expertise-list li {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--text);
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .expertise-list li::before {
+            content: '→';
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        /* Services Section */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: var(--surface);
+            padding: 3rem;
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient-accent);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 217, 255, 0.3);
+        }
+
+        .service-number {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+        }
+
+        .service-card h3 {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .service-card p {
+            color: var(--text-dim);
+            line-height: 1.8;
+        }
+
+        /* Projects Section */
+        #projects {
+            background: var(--secondary);
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            border-color: rgba(0, 217, 255, 0.3);
+        }
+
+        .project-header {
+            padding: 3rem;
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        .project-tag {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--accent);
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .project-card h3 {
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+
+        .project-description {
+            color: var(--text-dim);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .project-body {
+            padding: 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .project-challenge,
+        .project-solution {
+            color: var(--text-dim);
+        }
+
+        .project-challenge h4,
+        .project-solution h4 {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .project-metrics {
+            padding: 2rem 3rem 3rem;
+            display: flex;
+            gap: 3rem;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 2.5rem;
+            color: var(--accent);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Contact Section */
+        #contact {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .contact-info h2 {
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .contact-info p {
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .contact-methods {
+            list-style: none;
+        }
+
+        .contact-methods li {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-methods a {
+            font-family: 'IBM Plex Mono', monospace;
+            color: var(--text);
+            text-decoration: none;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .contact-methods a:hover {
+            color: var(--accent);
+        }
+
+        .contact-methods a::before {
+            content: '→';
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background: var(--surface);
+            padding: 3rem;
+            border: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text);
+            display: block;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            background: var(--primary);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            color: var(--text);
+            padding: 1rem;
+            font-family: 'Crimson Pro', serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent);
+            transition: left 0.3s ease;
+            z-index: -1;
+        }
+
+        .submit-btn:hover {
+            color: var(--primary);
+        }
+
+        .submit-btn:hover::before {
+            left: 0;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            padding: 3rem;
+            border-top: 1px solid rgba(0, 217, 255, 0.1);
+            text-align: center;
+        }
+
+        footer p {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .nav-container {
+                padding: 1.5rem 2rem;
+            }
+
+            .nav-links {
+                gap: 2rem;
+            }
+
+            .hero {
+                padding: 6rem 2rem 4rem;
+            }
+
+            section {
+                padding: 4rem 2rem;
+            }
+
+            .about-content,
+            .contact-content,
+            .project-body {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .profile-image-container {
+                width: 250px;
+                height: 250px;
+                margin: 0 auto 2rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-metrics {
+                flex-direction: column;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">ANALYTICS.EXPERT</div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-label">Server-Side Tracking Specialist</div>
+            <h1>Building <strong>reliable</strong> analytics infrastructure for data-driven decisions</h1>
+            <p class="hero-description">
+                Expert in server-side GTM, GA4, and Looker Studio. I help businesses move beyond basic tracking to create measurement systems that deliver accurate, privacy-compliant data they can trust.
+            </p>
+            <a href="#contact" class="cta-button">LET'S TALK DATA</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-label">About Me</div>
+                <h2 class="section-title">Precision in analytics infrastructure</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        I'm a server-side tracking expert who specializes in building robust analytics infrastructures that deliver accurate, privacy-compliant data. With hands-on experience in Google Tag Manager (server-side), GA4, and Looker Studio, I help businesses create measurement systems they can truly rely on.
+                    </p>
+                    <p>
+                        In today's privacy-first world, traditional client-side tracking is increasingly unreliable. Ad blockers, iOS restrictions, and browser limitations mean businesses are losing up to 30% of their data. I solve this through server-side implementations that capture accurate data while respecting user privacy.
+                    </p>
+                    <p>
+                        Whether you're dealing with e-commerce tracking challenges, conversion optimization needs, or complex attribution modeling, I build solutions that work.
+                    </p>
+                </div>
+                <div>
+                    <!-- Profile Image -->
+                    <div class="profile-image-container">
+                        <img src="your-photo.jpg" alt="Your Name - Analytics Expert" class="profile-image">
+                    </div>
+                    
+                    <ul class="expertise-list">
+                        <li>Server-side Google Tag Manager</li>
+                        <li>GA4 Implementation & Migration</li>
+                        <li>Looker Studio Dashboards</li>
+                        <li>E-commerce Tracking Solutions</li>
+                        <li>Conversion Rate Optimization</li>
+                        <li>Attribution Modeling</li>
+                        <li>Privacy-Compliant Analytics</li>
+                        <li>Data Layer Architecture</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-label">What I Do</div>
+                <h2 class="section-title">Comprehensive analytics solutions</h2>
+                <p class="section-description">
+                    From implementation to visualization, I provide end-to-end analytics infrastructure services.
+                </p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-number">01</div>
+                    <h3>Server-Side GTM Setup</h3>
+                    <p>
+                        Implement server-side Google Tag Manager to overcome browser limitations, improve data accuracy, and enhance page performance. Includes container setup, tag configuration, and testing.
+                    </p>
+                </div>
+                <div class="service-card">
+                    <div class="service-number">02</div>
+                    <h3>GA4 Implementation</h3>
+                    <p>
+                        Complete GA4 setup from scratch or migration from Universal Analytics. Custom event tracking, e-commerce implementation, enhanced measurement, and conversion tracking configuration.
+                    </p>
+                </div>
+                <div class="service-card">
+                    <div class="service-number">03</div>
+                    <h3>Looker Studio Dashboards</h3>
+                    <p>
+                        Transform your data into actionable insights with custom Looker Studio dashboards. Real-time reporting, automated data visualization, and executive-ready analytics.
+                    </p>
+                </div>
+                <div class="service-card">
+                    <div class="service-number">04</div>
+                    <h3>E-commerce Tracking</h3>
+                    <p>
+                        Advanced e-commerce tracking for product views, add-to-cart events, checkout funnels, and revenue attribution. Works with Shopify, WooCommerce, and custom platforms.
+                    </p>
+                </div>
+                <div class="service-card">
+                    <div class="service-number">05</div>
+                    <h3>Conversion Optimization</h3>
+                    <p>
+                        Set up proper conversion tracking, build attribution models, and create testing frameworks to optimize your marketing spend and improve ROI.
+                    </p>
+                </div>
+                <div class="service-card">
+                    <div class="service-number">06</div>
+                    <h3>Analytics Audits</h3>
+                    <p>
+                        Comprehensive review of your current analytics setup. Identify data gaps, tracking issues, and opportunities for improvement with actionable recommendations.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects">
+        <div class="section-container">
+            <div class="section-header">
+                <div class="section-label">Case Studies</div>
+                <h2 class="section-title">Real results from real implementations</h2>
+            </div>
+
+            <!-- Project 1 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-tag">E-COMMERCE · SERVER-SIDE TRACKING</div>
+                    <h3>GlobalFashion Retailer</h3>
+                    <p class="project-description">
+                        Complete server-side tracking overhaul for a mid-sized fashion e-commerce brand experiencing significant data loss from iOS 14+ restrictions.
+                    </p>
+                </div>
+                <div class="project-body">
+                    <div class="project-challenge">
+                        <h4>The Challenge</h4>
+                        <p>
+                            The client was losing approximately 35% of tracking data due to ad blockers and iOS privacy features. Their marketing team couldn't accurately attribute conversions, leading to inefficient ad spend and poor ROAS calculations.
+                        </p>
+                    </div>
+                    <div class="project-solution">
+                        <h4>The Solution</h4>
+                        <p>
+                            Implemented server-side GTM with custom event tracking, rebuilt their GA4 e-commerce implementation, and created Looker Studio dashboards for real-time revenue tracking. Migrated all critical marketing pixels to server-side architecture.
+                        </p>
+                    </div>
+                </div>
+                <div class="project-metrics">
+                    <div class="metric">
+                        <span class="metric-value">+42%</span>
+                        <span class="metric-label">Data Capture Rate</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">-28%</span>
+                        <span class="metric-label">Page Load Time</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">98%</span>
+                        <span class="metric-label">Tracking Accuracy</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-tag">SAAS · GA4 MIGRATION</div>
+                    <h3>TechSaaS Platform</h3>
+                    <p class="project-description">
+                        End-to-end GA4 migration and custom event tracking for a B2B SaaS platform with complex user journeys and multi-touch attribution needs.
+                    </p>
+                </div>
+                <div class="project-body">
+                    <div class="project-challenge">
+                        <h4>The Challenge</h4>
+                        <p>
+                            Migrating from Universal Analytics before the sunset deadline while maintaining historical data continuity. Needed to track complex user behaviors across trial signups, feature usage, and subscription conversions.
+                        </p>
+                    </div>
+                    <div class="project-solution">
+                        <h4>The Solution</h4>
+                        <p>
+                            Built custom GA4 implementation with event-based architecture tracking 20+ user actions. Created data layer specification, implemented custom dimensions for user segments, and developed Looker Studio attribution reports.
+                        </p>
+                    </div>
+                </div>
+                <div class="project-metrics">
+                    <div class="metric">
+                        <span class="metric-value">20+</span>
+                        <span class="metric-label">Custom Events</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">100%</span>
+                        <span class="metric-label">Data Continuity</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">5x</span>
+                        <span class="metric-label">Insight Depth</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div class="project-tag">ENTERPRISE · DATA VISUALIZATION</div>
+                    <h3>Marketing Analytics Dashboard</h3>
+                    <p class="project-description">
+                        Executive-level Looker Studio dashboard consolidating data from GA4, Google Ads, Facebook Ads, and CRM for a marketing agency managing 15+ client accounts.
+                    </p>
+                </div>
+                <div class="project-body">
+                    <div class="project-challenge">
+                        <h4>The Challenge</h4>
+                        <p>
+                            Marketing team was manually pulling data from multiple platforms into spreadsheets weekly. No real-time visibility into campaign performance, client ROI, or cross-channel attribution.
+                        </p>
+                    </div>
+                    <div class="project-solution">
+                        <h4>The Solution</h4>
+                        <p>
+                            Designed and built automated Looker Studio dashboards with data blending from multiple sources. Created custom metrics for client-specific KPIs, automated reporting schedules, and mobile-friendly views for on-the-go access.
+                        </p>
+                    </div>
+                </div>
+                <div class="project-metrics">
+                    <div class="metric">
+                        <span class="metric-value">15 hrs</span>
+                        <span class="metric-label">Weekly Time Saved</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">Real-time</span>
+                        <span class="metric-label">Data Updates</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value">6</span>
+                        <span class="metric-label">Data Sources</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="section-container">
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2>Let's build something accurate together</h2>
+                    <p>
+                        Ready to upgrade your analytics infrastructure? Whether you need server-side tracking, GA4 implementation, or custom dashboards, let's discuss how I can help.
+                    </p>
+                    <ul class="contact-methods">
+                        <li><a href="/cdn-cgi/l/email-protection#2a53455f58044f474b43466a4f524b475a464f04494547"><span class="__cf_email__" data-cfemail="542d3b21267a3139353d3814312c35392438317a373b39">[email&#160;protected]</span></a></li>
+                        <li><a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn Profile</a></li>
+                        <li><a href="https://github.com/yourprofile" target="_blank">GitHub Portfolio</a></li>
+                    </ul>
+                </div>
+                <div class="contact-form">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Project Details</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">SEND MESSAGE</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Analytics Expert. Built with precision.</p>
+    </footer>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Form submission handler
+        do
